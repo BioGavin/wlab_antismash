@@ -13,7 +13,8 @@
 创建环境
 
 ```bash
-conda create -n antismash python
+conda create -n antismash python  # 创建环境
+conda activate antismash  #激活环境
 ```
 
 此时生成了两个后续会放置文件的路径：
@@ -47,7 +48,7 @@ cp scripts/* ~/miniconda3/envs/antismash/bin/
 将目标版本的 antismash 包文件放置到 `~/miniconda3/envs/antismash/lib/python3.10/site-packages/` 目录下
 
 ```bash
-cp antismash_x.x.x ~/miniconda3/envs/antismash/lib/python3.10/site-packages/antismash  # 将 x.x.x 改为你的目标版本号
+cp -r antismash_x.x.x/ ~/miniconda3/envs/antismash/lib/python3.10/site-packages/antismash  # 将 x.x.x 改为你的目标版本号
 ```
 
 
@@ -71,12 +72,29 @@ cp antismash_x.x.x ~/miniconda3/envs/antismash/lib/python3.10/site-packages/anti
 将下载的数据库文件放置到 antismash 包文件夹下的 `databases` 文件夹中
 
 ```
-cp -r antismash_x.x.x_database/* ~/miniconda3/envs/antismash/lib/python3.10/site-packages/antismash/databases
+unzip antismash_databases_x.x.x.zip
+cp -r antismash_x.x.x_databases/* ~/miniconda3/envs/antismash/lib/python3.10/site-packages/antismash/databases
 ```
 
 
 
-## 4. 校验与使用
+## 4. 环境构建
+
+利用 `conda` 构建运行环境。（此处构建教程可能并不完整，具体环境要求可根据相关报错解决）
+
+```bash
+conda install hmmer2 hmmer diamond fasttree prodigal blast glimmerhmm
+conda install muscle=3.8.1551  # 安装5.1版本会报错
+```
+
+```bash
+pip install biopython helperlibs bcbio-gff jsonschema pysvg-py3 joblib sklearn matplotlib pyscss
+conda install jinja2 
+```
+
+
+
+## 5. 校验与使用
 
 1. 数据库的校验，运行以下命令，如果显示数据库准备完成即可
 
