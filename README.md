@@ -13,7 +13,7 @@
 创建环境
 
 ```bash
-conda create -n antismash python  # 创建环境
+conda create -n antismash python=3.8  # 创建环境
 conda activate antismash  #激活环境
 ```
 
@@ -90,6 +90,12 @@ conda install muscle=3.8.1551  # 安装5.1版本会报错
 ```bash
 pip install biopython helperlibs bcbio-gff jsonschema pysvg-py3 joblib sklearn matplotlib pyscss
 conda install jinja2 
+```
+
+如果要使用 CASSIS 分析，需要安装 meme (⚠️CASSIS cluster prediction only works for fungal sequence.)
+
+```bash
+conda install meme==4.11.2
 ```
 
 
