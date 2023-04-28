@@ -45,10 +45,10 @@ cp scripts/* ~/miniconda3/envs/antismash/bin/
 
 - antiSMASH 6.0.1
 
-将目标版本的 antismash 包文件放置到 `~/miniconda3/envs/antismash/lib/python3.10/site-packages/` 目录下
+将目标版本的 antismash 包文件放置到 `~/miniconda3/envs/antismash/lib/python3.8/site-packages/` 目录下
 
 ```bash
-cp -r antismash_x.x.x/ ~/miniconda3/envs/antismash/lib/python3.10/site-packages/antismash  # 将 x.x.x 改为你的目标版本号
+cp -r antismash_x.x.x/ ~/miniconda3/envs/antismash/lib/python3.8/site-packages/antismash  # 将 x.x.x 改为你的目标版本号
 ```
 
 
