@@ -21,7 +21,7 @@ conda activate antismash  #激活环境
 
 - `~/miniconda3/envs/antismash/bin/` 
 
-- `~/miniconda3/envs/antismash/lib/python3.10/site-packages/`
+- `~/miniconda3/envs/antismash/lib/python3.8/site-packages/`
 
 
 
