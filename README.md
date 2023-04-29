@@ -88,7 +88,7 @@ conda install muscle=3.8.1551  # 安装5.1版本会报错
 ```
 
 ```bash
-pip install biopython helperlibs bcbio-gff jsonschema pysvg-py3 joblib sklearn matplotlib pyscss
+pip install biopython helperlibs bcbio-gff jsonschema pysvg-py3 joblib scikit-learn matplotlib pyscss
 conda install jinja2=3.0.3
 ```
 
