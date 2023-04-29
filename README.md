@@ -80,7 +80,16 @@ cp -r antismash_x.x.x_databases/* ~/miniconda3/envs/antismash/lib/python3.8/site
 
 ## 4. 环境构建
 
-利用 `conda` 构建运行环境。（此处构建教程可能并不完整，具体环境要求可根据相关报错解决）
+利用 `conda` 构建运行环境，一下提供两种构建方式，选择其一即可（此处构建教程可能并不完整，具体环境要求可根据相关报错解决）
+
+### 4.1 根据环境配置文件安装
+
+```bash
+conda env update --file antismash_x.x.x.yaml
+pip install -r antismash_x.x.x_requirements.txt
+```
+
+### 4.2 手动一步步安装
 
 ```bash
 conda install hmmer2 hmmer diamond fasttree prodigal blast glimmerhmm
