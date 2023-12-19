@@ -1,0 +1,20 @@
+<div class="more-details">
+    <div class="heading">
+      <span>Core peptide predictions</span>
+      {{help_tooltip(tooltip, "sacti-side")}}
+    </div>
+{% if motifs_by_locus %}
+  <dl class ="prediction-text">
+  {% for motifs in motifs_by_locus.values() %}
+    {%- for motif in motifs -%}
+    <dt><span class="serif">{{motif.get_name().rsplit("_", 1)[0]}}</span></dt>
+      <dd>Putative sactipeptide</dd>
+      <dd>RODEO score: {{motif.score}}</dd>
+      <dd>Core sequence, approximate: {{motif.core}}</dd>
+    {%- endfor -%}
+  {% endfor %}
+  </dl>
+{% else %}
+  <div class="prediction-text">No core peptides found.</div>
+{% endif %}
+</div>

@@ -1,0 +1,25 @@
+<div class="details">
+    <div class="heading">
+      <span>Module view</span>
+      {{help_tooltip(tooltip_text, "nrps-pks-bubble-tooltip")}}
+      <div class="download-container">
+        <div class="download-icon download-svg" data-tag="{{region.anchor_id}}-domain-bubble-svg" data-filename="{{record.id}}_{{region.anchor_id}}_domain_bubbles.svg">
+        </div>
+      </div>
+    </div>
+    <select id="{{region.anchor_id}}-domain-bubble-select" class="nrps-bubble-selector">
+    {% for candidate in region.candidate_clusters %}
+      {% if candidate.smiles or candidate.polymer %}
+        <option value="CC{{candidate.number}}">
+          Candidate {{candidate.number}} ({{candidate.location.start}} - {{candidate.location.end}}): {{candidate.kind}} {{candidate.products}}
+        </option>
+      {% endif %}
+    {% endfor %}
+    </select>
+    {# this next div is populated by javascript #}
+    <div class="details-svg" id="{{region.anchor_id}}-domain-bubble-svg-container" style="overflow:auto;">
+    </div>
+    <div class="bubble-legend-title">Legend</div>
+    {# this next div is populated by javascript #}
+    <div class="bubble-legend-container" id="{{region.anchor_id}}-bubble-legend"></div>
+</div>

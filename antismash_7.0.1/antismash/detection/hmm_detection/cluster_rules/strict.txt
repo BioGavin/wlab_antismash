@@ -1,0 +1,671 @@
+# Contains rules for well defined clusters, containing all expected functional parts
+
+# Cutoffs and neighbourhoods are given in kilobases
+
+DEFINE ANY_KS AS (PKS_KS or ene_KS or mod_KS or hyb_KS or itr_KS or tra_KS)
+
+RULE T1PKS
+    CATEGORY PKS
+    DESCRIPTION Type I polyketide
+    CUTOFF 20
+    NEIGHBOURHOOD 20
+    CONDITIONS cds(PKS_AT and ANY_KS)
+
+RULE T2PKS
+    CATEGORY PKS
+    DESCRIPTION Type II polyketide
+    EXAMPLE NCBI AM492533.1 0-43202 lysolipin
+    RELATED t2pks2, ksIII
+    CUTOFF 20
+    NEIGHBOURHOOD 35  # lysolipin (AM492533) has a range of ~33kb
+    CONDITIONS t2ks and t2clf
+
+RULE T3PKS
+    CATEGORY PKS
+    DESCRIPTION Type III polyketide
+    CUTOFF 20
+    NEIGHBOURHOOD 20
+    CONDITIONS Chal_sti_synt_C or Chal_sti_synt_N
+
+RULE transAT-PKS
+    CATEGORY PKS
+    DESCRIPTION Trans-AT polyketide
+    EXAMPLE NCBI CP006259.1 382565-499230 kirromycin
+    EXAMPLE NCBI CP001511.1 5000-30000 toblerol
+    CUTOFF 45  # kirromycin (CP006259) has a range of ~42kb
+    NEIGHBOURHOOD 20
+    CONDITIONS cds(PKS_AT and not ANY_KS)
+               and (
+                cds(ATd and ANY_KS)
+                # handle CP001511 5k-30k as per https://doi.org/10.1002/ange.201709056
+                or cds(tra_KS and PP-binding)
+               )
+
+RULE hglE-KS
+    CATEGORY PKS
+    DESCRIPTION heterocyst glycolipid synthase like PKS
+    EXAMPLE NCBI KC489223.1 0-17945 heterocyst glycolipid
+    CUTOFF 20
+    NEIGHBOURHOOD 20
+    CONDITIONS hglE or hglD
+
+RULE prodigiosin
+    CATEGORY PKS
+    DESCRIPTION Serratia-type nontraditional PKS prodigiosin biosynthesis pathway
+    EXAMPLE NCBI AJ833001.1 0-25055 prodigiosin
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS PPDK_N and AMP-binding and PP-binding and PKS_KS
+
+RULE PpyS-KS
+    CATEGORY PKS
+    DESCRIPTION PPY-like specific ketosynthases (PPYSKS)
+    EXAMPLE NCBI KT373879.1 0-22800 pseudopyronine A
+    CUTOFF 10
+    NEIGHBOURHOOD 10
+    CONDITIONS PpyS
+
+RULE arylpolyene
+    CATEGORY other
+    DESCRIPTION Aryl polyene
+    CUTOFF 20
+    NEIGHBOURHOOD 20
+    CONDITIONS APE_KS1 or APE_KS2
+
+RULE resorcinol
+    CATEGORY other
+    DESCRIPTION Resorcinol
+    CUTOFF 20
+    NEIGHBOURHOOD 20
+    CONDITIONS DarB
+
+RULE ladderane
+    CATEGORY other
+    DESCRIPTION Ladderane
+    CUTOFF 20
+    NEIGHBOURHOOD 20
+    CONDITIONS ladderane
+
+RULE PUFA
+    CATEGORY other
+    DESCRIPTION PolyUnsaturated Fatty Acid
+    CUTOFF 20
+    NEIGHBOURHOOD 20
+    CONDITIONS PUFA_KS
+
+RULE NRPS
+    CATEGORY NRPS
+    DESCRIPTION non-ribosomal peptide synthase
+    CUTOFF 20
+    NEIGHBOURHOOD 20
+    CONDITIONS cds(Condensation and (AMP-binding or A-OX))
+
+RULE CDPS
+    CATEGORY NRPS
+    DESCRIPTION tRNA-dependent cyclodipeptide synthases
+    EXAMPLE NCBI PKFQ01000001.1 5989045-5998011 bicyclomycin
+    RELATED Flavoprotein, 2OG-FeII_Oxy, p450
+    CUTOFF 5
+    NEIGHBOURHOOD 10
+    CONDITIONS CDPS or cycdipepsynth
+
+RULE RCDPS
+    CATEGORY NRPS
+    DESCRIPTION fungal tRNA-dependent arginine-containing cyclodipeptide synthases
+    # as described in doi: 10.1038/s41589-022-01246-6
+    EXAMPLE NCBI NKHU02000029.1 123918-147820
+    CUTOFF 5
+    NEIGHBOURHOOD 12
+    CONDITIONS RCDPS
+
+RULE thioamide-NRP
+    CATEGORY NRPS
+    DESCRIPTION thioamide-containing non-ribosomal peptides
+    # see (https://doi.org/10.1002/anie.201807970)
+    EXAMPLE NCBI CP001348.1 3804343-3815207 closthioamide
+    RELATED Chor_lyase
+    CUTOFF 20
+    NEIGHBOURHOOD 20
+    CONDITIONS ATP-grasp and AMP-binding and PP-binding and
+                (DUF98 or Orn_Arg_deC_N or Orn_DAP_Arg_deC)
+
+RULE NAPAA
+    CATEGORY NRPS
+    DESCRIPTION non-alpha poly-amino acids
+    # see (https://doi.org/10.1101/2020.07.24.220772)
+    EXAMPLE NCBI NC_015859.1 135101-140457 e-Polylysin
+    RELATED PP-binding
+    CUTOFF 5
+    NEIGHBOURHOOD 15
+    CONDITIONS AMP-binding and TIGR02353
+
+RULE mycosporine-like
+    CATEGORY NRPS
+    DESCRIPTION mycosporine-like amino acid containing molecules
+    EXAMPLE NCBI MN401680.1 0-5063 mycosporine
+    RELATED Dala_Dala_lig_C, Dala_Dala_lig_N
+    CUTOFF 10
+    NEIGHBOURHOOD 20
+    CONDITIONS DHQ_synthase and Methyltransf_3 and ATP-grasp_3
+
+RULE terpene
+    CATEGORY terpene
+    DESCRIPTION Terpene
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS Terpene_synth or Terpene_synth_C or phytoene_synt or Lycopene_cycl
+               or terpene_cyclase or NapT7 or fung_ggpps or fung_ggpps2
+               or trichodiene_synth or TRI5
+
+DEFINE all_YcaO AS (YcaO or TIGR03604)
+
+RULE lanthipeptide-class-i
+    CATEGORY RiPP
+    DESCRIPTION Class I lanthipeptide
+    EXAMPLE NCBI HM219853.1 0-15016 nisin
+    RELATED Antimicr18, Gallidermin, L_biotic_A, lacticin_l, leader_d, leader_abc, leader_eh,
+            mature_ha, lacticin_mat, mature_b, mature_d, mature_ab, mature_a, TIGR03731,
+            LD_lanti_pre, strep_PEQAXS, Peptidase_S8, Peptidase_C39, PCMT, adh_short, adh_short_C2
+
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS (LANC_like and (Lant_dehydr_N or Lant_dehydr_C))
+               and not all_YcaO # because then it'd be a thiopeptide
+
+RULE lanthipeptide-class-ii
+    CATEGORY RiPP
+    DESCRIPTION Class II lanthipeptide
+    EXAMPLE NCBI U40620.1 0-3480 mutacin II
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS cds(LANC_like and DUF4135)
+
+RULE lanthipeptide-class-iii
+    CATEGORY RiPP
+    DESCRIPTION Class III lanthipeptide
+    EXAMPLE NCBI FN178622.1 0-6400 labyrinthopeptin
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS micKC
+               and not PKS_KS  # that'd be a lipolanthine
+
+RULE lanthipeptide-class-iv
+    CATEGORY RiPP
+    DESCRIPTION Class IV lanthipeptide
+    EXAMPLE NCBI HQ328852.1 0-5339 venezuelin
+    RELATED Peptidase_S9
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS cds(LANC_like and Pkinase)
+               and not micKC  # that'd be a class III
+
+RULE lanthipeptide-class-v
+    CATEGORY RiPP
+    DESCRIPTION Glycosylated lanthipeptide/linaridin hybrids
+    EXAMPLE NCBI MT210103.1 0-29760 cacaoidin
+    RELATED Flavoprotein, Glycos_transf_1, Glycos_transf_2
+    CUTOFF 20
+    NEIGHBOURHOOD 20
+    CONDITIONS APH and HopA1
+
+RULE lipolanthine
+    CATEGORY RiPP
+    DESCRIPTION Lanthipeptide class containing N-terminal fatty acids
+    # See https://doi.org/10.1038/s41589-018-0068-6
+    EXAMPLE NCBI MG673929.1 0-40001 microvionin
+    RELATED PKS_KS, AMP-binding, PP-binding
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS micKC and Flavoprotein
+
+RULE thiopeptide
+    CATEGORY RiPP
+    DESCRIPTION Thio-linked RiPPs
+    RELATED PF00561
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS all_YcaO
+               and ((thio_amide and (PF06968 or PF04055 or PF07366))
+                         or Lant_dehydr_C or Lant_dehydr_N
+                         or PF07366 or PF06968 or PF04055)
+               or thiostrepton
+
+RULE thioamitides
+    CATEGORY RiPP
+    DESCRIPTION Thioamitide RiPPs
+    # as described in https://doi.org/10.1093/nar/gkz192
+    EXAMPLE NCBI JOBF01000011.1 155003-161953 thiovarsolin
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS all_YcaO and TfuA
+
+RULE linaridin
+    CATEGORY RiPP
+    DESCRIPTION Linear arid peptides
+    EXAMPLE NCBI HQ148718.1 0-12148 cypemycin
+    EXAMPLE NCBI MG788286.1 0-6178 salinipeptin
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS cypemycin or cypI
+
+RULE cyanobactin
+    CATEGORY RiPP
+    DESCRIPTION Cyanobactins
+    EXAMPLE NCBI AY986476.1 0-12693 patellamide
+    EXAMPLE NCBI FJ461733.2 1610-12397 anacyclamide A10
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS cyanobactin_synth         # peptidase
+               or TIGR03678              # precursor
+               or cyanobactin_precursor  # precursor, dynamic detection
+
+RULE glycocin
+    CATEGORY RiPP
+    DESCRIPTION Glycocin
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS glycocin or sublancin
+
+RULE LAP
+    CATEGORY RiPP
+    DESCRIPTION Linear azol(in)e-containing peptides
+    EXAMPLE NCBI AB205012.1 0-20194 goadsporin
+    EXAMPLE NCBI FM877811.1 0-5145 microcin B17
+    RELATED TIGR04424, TIGR01408
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS (((goadsporin_like or PF00881 or TIGR03605)
+               and all_YcaO)
+               or TIGR03882
+               or TIGR03603   # peptide maturase
+               or TIGR03602)  # precursor
+               and not cyanobactin_synth
+
+RULE lassopeptide
+    CATEGORY RiPP
+    DESCRIPTION Lasso peptide
+    RELATED PF05402, lasso, Peptidase_M50
+    CUTOFF 10
+    NEIGHBOURHOOD 10
+    CONDITIONS PF13471 and Asn_synthase or micJ25 or mcjC
+
+RULE sactipeptide
+    CATEGORY RiPP
+    DESCRIPTION Sactipeptide
+    RELATED Abi, Fer4_12, Peptidase_M16_C, Peptidase_S8, Peptidase_M16, Peptidase_S41
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS subtilosin or thuricin or TIGR04404 or
+               Subtilosin_A or skfc
+
+RULE bottromycin
+    CATEGORY RiPP
+    DESCRIPTION Bottromycin-like RiPPs
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS botH
+
+RULE microviridin
+    CATEGORY RiPP
+    DESCRIPTION Microviridins
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS mvd or mvnA
+
+RULE proteusin
+    CATEGORY RiPP
+    DESCRIPTION Highly modified large leader peptide RiPPs
+    EXAMPLE NCBI JX456532.1 5499-20549 polytheonamide
+    EXAMPLE NCBI NZ_KB235904.1 469950-493649 landornamide
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    # Unfortunately, there is no real class-defining enzyme, but all
+    # known precursors are similar to a nitrile hydratase
+    CONDITIONS PoyD          # polytheonamide-like rSAM
+               or TIGR03793  # nitrile hydratase-like leader peptide
+
+DEFINE rSAM_with_SPASM AS cds(PF04055 and (TIGR04085 or SPASM))
+
+DEFINE ANY_RRE AS minimum(1,
+   [Lanthipeptide_LanB_RRE, Stand_Alone_Lasso_RRE, Lasso_Fused_RRE, Thiopeptide_F_RRE, PqqD_RRE,
+    Cyanobactin_D_RRE, Bottromycin_Methyltransferase_RRE, Proteusin_Methyltransferase_RRE,
+    Proteusin_Epimerase_RRE, Heterocycloanthracin_C_RRE, Plantazolicin_C_RRE,
+    Goadsporin_CD_RRE, Cytolysin_C_RRE, NHLP_CD_RRE, Mycofactocin_RRE,
+    Pantocin_Microcin_RRE, Subtilosin_rSAM_RRE,Thurincin_rSAM_RRE, Thuricin_rSAM_RRE,
+    Other_Sactipeptide_rSAM_RRE, Streptide_RRE, Quinohemoprotein_rSAM_RRE,
+    Ranthipeptide_rSAM_RRE, Trifolitoxin_RRE, Thiaglutamate_G_RRE,
+    Thiaglutamate_I_RRE, Thiaglutamate_B_RRE, PlpY_RRE
+   ])
+
+RULE ranthipeptide
+    CATEGORY RiPP
+    DESCRIPTION Cys-rich peptides (aka. SCIFF: six Cys in fourty-five)
+    EXAMPLE NCBI CP001581.1 3481278-3502939
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS TIGR03973 or SCIFF or  # precursors
+               (
+                rSAM_with_SPASM and ANY_RRE
+                and not (TIGR01716 or              # avoid co-detecting RaS-RiPPs
+                         subtilosin or             # avoid co-detecting sactipeptides
+                         TIGR02111 or TIGR03966 or # avoid co-detecting redox-cofactor clusters
+                         TIGR04103 or              # avoid co-detecting spliceotides
+                         all_YcaO)                 # avoid co-detecting thiopeptides
+               )
+
+RULE redox-cofactor
+    CATEGORY RiPP
+    DESCRIPTION Redox-cofactors
+    EXAMPLE NCBI NC_021985.1 1458905-1494876 PQQ
+    EXAMPLE NCBI NC_000962.3 781830-803332 mycofactocin
+    RELATED PF05402
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS rSAM_with_SPASM and (TIGR02111 or TIGR03966) and ANY_RRE
+
+RULE epipeptide
+    CATEGORY RiPP
+    DESCRIPTION D-amino-acid containing RiPPs
+    EXAMPLE NCBI D78193.1 0-36200 yydF
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS TIGR04078 and yydH
+
+RULE cyclic-lactone-autoinducer
+    CATEGORY RiPP
+    DESCRIPTION agrD-like cyclic lactone autoinducer peptides
+    EXAMPLE NCBI AF001782.1 0-2007
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS TIGR04223 or AgrB
+
+RULE spliceotide
+    CATEGORY RiPP
+    DESCRIPTION RiPPs containing plpX type spliceases
+    EXAMPLE NCBI NZ_KB235920.1 17899-42115 PcpA
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS TIGR04103 and TIGR03798
+
+RULE RaS-RiPP
+    CATEGORY RiPP
+    DESCRIPTION streptide-like thioether-bond RiPPs
+    # See https://pubs.acs.org/doi/10.1021/jacs.8b11060 and
+    # https://pubs.acs.org/doi/full/10.1021/jacs.8b10266
+    EXAMPLE NCBI FR875178.1 1334639-1338848 streptide
+    EXAMPLE NCBI CP000419.1 1259085-1262598 streptide
+    CUTOFF 5
+    NEIGHBOURHOOD 10
+    CONDITIONS PF04055 and TIGR01716
+
+RULE fungal-RiPP
+    CATEGORY RiPP
+    DESCRIPTION fungal RiPP with POP or UstH peptidase types and a modification
+    CUTOFF 15
+    NEIGHBOURHOOD 15
+    CONDITIONS (pop or ustH) and (p450 or TP_methylase)
+               or
+               #DUF3228 seems to be quite specific and also co-occurs with these peptidases
+               DUF3328 and (Peptidase_S41 or Peptidase_S28 or pop or ustH)
+
+RULE blactam
+    CATEGORY other
+    DESCRIPTION beta-lactam
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS BLS or CAS or tabtoxin
+
+DEFINE DHQ_synthase_like AS (DOIS or DHQ_synthase or ValA or salQ)
+
+RULE 2dos
+    CATEGORY other
+    DESCRIPTION 2-deoxy-streptamine aminoglycoside
+    EXAMPLE NCBI AJ875019.1 1-39979 apramycin
+    EXAMPLE NCBI AJ628149.4 17857-58741 gentamycin
+    EXAMPLE NCBI AJ628642.1 7116-32528 hygromycin
+    EXAMPLE NCBI AJ845083.2 17236-47180 istamycin
+    EXAMPLE NCBI AJ582817.3 1-47050 kanamycin
+    EXAMPLE NCBI AJ629247.1 9188-39636 neomycin
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS DHQ_synthase_like and DegT_DnrJ_EryC1 and
+               (LipV or ADSI-DH or cds(ADH_N and ADH_zinc_N))
+
+RULE amglyccycl
+    CATEGORY other
+    DESCRIPTION Aminoglycoside/aminocyclitol
+    SUPERIORS 2dos
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS DOIS or ValA or salQ  # DHQ_synthase is too broad to use standalone
+               or strH or strK1 or strK2 or NeoL or SpcFG
+               or SpcDK_glyc
+
+
+RULE aminocoumarin
+    CATEGORY other
+    DESCRIPTION Aminocoumarin
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS novK or novJ or novI or novH or SpcDK_cou
+
+RULE NI-siderophore
+    CATEGORY other
+    DESCRIPTION NRPS-independent IucA/IucC-like siderophores
+    CUTOFF 20
+    NEIGHBOURHOOD 5
+    CONDITIONS IucA_IucC
+
+RULE ectoine
+    CATEGORY other
+    DESCRIPTION Ectoine
+    CUTOFF 20
+    NEIGHBOURHOOD 5
+    CONDITIONS ectoine_synt
+
+RULE NAGGN
+    CATEGORY other
+    DESCRIPTION N-acetylglutaminylglutamine amide
+    # see https://doi.org/10.1128/AEM.00686-10
+    EXAMPLE NCBI NC_007005.1 4464460-4469261 N-acetylglutaminylglutamine amide
+    CUTOFF 10
+    NEIGHBOURHOOD 5
+    CONDITIONS (TIGR03104 or cds(GATase_7 and Asn_synthase))  # amidotransferase ggnA
+               and TIGR03103                                  # acetyltransferase ggnB
+               and (TIGR03106 or Peptidase_M42)               # aminopeptidase ggnC
+
+RULE butyrolactone
+    CATEGORY other
+    DESCRIPTION Butyrolactone
+    CUTOFF 20
+    NEIGHBOURHOOD 5
+    CONDITIONS AfsA
+
+RULE indole
+    CATEGORY other
+    DESCRIPTION Indole
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS indsynth or dmat or indole_PTase
+
+RULE nucleoside
+    CATEGORY other
+    DESCRIPTION Nucleoside
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS LipM or LipV or LipU or ToyB or TunD or pur6 or pur10 or nikJ or nikO or truD
+
+RULE phosphoglycolipid
+    CATEGORY other
+    DESCRIPTION Phosphoglycolipid
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS MoeO5 or moeGT
+
+RULE melanin
+    CATEGORY other
+    DESCRIPTION Melanin
+    CUTOFF 20
+    NEIGHBOURHOOD 5
+    CONDITIONS melC
+
+RULE oligosaccharide
+    CATEGORY saccharide
+    DESCRIPTION Oligosaccharide
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS minimum(3,[Glycos_transf_1,Glycos_transf_2,Glyco_transf_28,MGT,DUF1205])
+               and minscore(MGT, 150)
+
+RULE furan
+    CATEGORY other
+    DESCRIPTION Furan
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS mmyO or AvrD
+
+RULE hserlactone
+    CATEGORY other
+    DESCRIPTION Homoserine lactone
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS Autoind_synth
+
+RULE phenazine
+    CATEGORY other
+    DESCRIPTION Phenazine
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS phzB
+
+RULE phosphonate
+    CATEGORY other
+    DESCRIPTION Phosphonate
+    # described in DOI: 10.1016/j.chembiol.2006.09.007
+    EXAMPLE NCBI EU924263.1 0-31799 fosfomycin
+    CUTOFF 20
+    NEIGHBOURHOOD 5
+    CONDITIONS phosphonates and minimum(1, [
+                   phosphonates, # intentional repetition, allows for more accurate core boundaries
+                   # the remaining profiles in this "or" could move to "related" profiles,
+                   # if at some point related profiles extend protocluster boundaries
+                   2-Hacid_dh_C, Aldedh, Aminotran_1_2, Aminotran_5, AurF,
+                   CTP_transf_like, DUF4992, Fe-ADH, HMGL-like, Metallophos_2,
+                   NTP_transf_3, NTP_transf_5, PALP, PEP_mutase, TPP_enzyme_C,
+                   TPP_enzyme_N
+               ]) and not (phosphonatesHydrolase or phosphonatesMeIsocitrateLyase)
+
+RULE guanidinotides
+    CATEGORY RiPP
+    DESCRIPTION RiPP fused with a non-ribosomal peptide
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS pgm1 and pgm_amidino
+
+RULE other
+    CATEGORY other
+    DESCRIPTION Fallback category covering some secondary metabolite-related profiles
+    CUTOFF 20
+    NEIGHBOURHOOD 20
+    CONDITIONS LmbU or Neocarzinostat or bcpB
+               or frbD or mitE or vlmB or prnB or CaiA or bacilysin or orf2_PTase
+
+RULE acyl_amino_acids
+    CATEGORY other
+    DESCRIPTION N-acyl amino acids
+    EXAMPLE NCBI JF429413.1 7897-20270 N-tetradecanoyl tyrosine
+    RELATED ThiF
+    CUTOFF 30
+    NEIGHBOURHOOD 30
+    CONDITIONS NasY
+
+RULE PBDE
+    CATEGORY other
+    DESCRIPTION polybrominated diphenyl ethers (PBDEs)
+    EXAMPLE NCBI KX588877.1 0-15853 spongiadioxin C
+    CUTOFF 10
+    NEIGHBOURHOOD 10
+    CONDITIONS FMO-like and p450 and DUF98
+
+RULE betalactone
+    CATEGORY other
+    DESCRIPTION beta-lactone containing protease inhibitor
+    EXAMPLE NCBI KY249118.1 0-27983 belactosin C and cystargolide B
+    RELATED RimK, Abhydrolase_6
+    CUTOFF 10
+    NEIGHBOURHOOD 10
+    CONDITIONS HMGL-like and AMP-binding
+
+RULE tropodithietic-acid
+    CATEGORY other
+    DESCRIPTION tropodithietic acid like cluster
+    # described in DOI: 10.1039/C4CC01924E
+    EXAMPLE NCBI CP002977.1 88771-108389 tropodithietic acid
+    CUTOFF 20
+    NEIGHBOURHOOD 10
+    CONDITIONS (GST_N_3 or GST_C)
+               and (Acyl-CoA_dh_N or Acyl-CoA_dh_M or Acyl-CoA_dh_1)
+               and TIGR02278
+
+RULE pyrrolidine
+    CATEGORY other
+    DESCRIPTION Pyrrolidines
+    # See https://dx.doi.org/10.1073/pnas.1701361114
+    EXAMPLE NCBI KY014292.1 0-14535 anisomycin
+    RELATED Mac, adh_short
+    CUTOFF 10
+    NEIGHBOURHOOD 10
+    CONDITIONS Glycos_transf_1 and Alpha-amylase and Aminotran_3 and DXP_synthase_N
+
+RULE crocagin
+    CATEGORY RiPP
+    DESCRIPTION Crocagin-like cluster
+    # See https://dx.doi.org/10.1002/anie.201612640
+    EXAMPLE NCBI CP012159.1 3370631-3383702 crocagin
+    CUTOFF 10
+    NEIGHBOURHOOD 10
+    CONDITIONS PhyH and Carbam_trans_N
+
+RULE NRP-metallophore
+    CATEGORY NRPS
+    DESCRIPTION Non-ribosomal peptide metallophores
+    EXAMPLE NCBI GG657746.1 2722390-2757628 amychelin  # BGC0000300
+    EXAMPLE NCBI KC215181.1 0-36842 gobichelin         # BGC0000366
+    CUTOFF 30           # Prevents losing distant NRPS, ex: amychelin (BGC0000300)
+    NEIGHBOURHOOD 20    # Gobichelin (BGC0000366) is 20.1
+    CONDITIONS VibH_like or Cy_tandem or       # Siderophore-specific condensation domains
+               (cds(Condensation and AMP-binding) and (
+                    (IBH_Asp and not SBH_Asp) or IBH_His or TBH_Asp or       # OHHis/OHAsp, exclude syringomycins
+                    CyanoBH_Asp1 or CyanoBH_Asp2 or                          # Cyanobacterial OHAsp
+                    IPL or SalSyn or (EntA and EntC) or                      # Sal/DHB
+                    (GrbD and GrbE) or (FbnL and FbnM) or PvdO or PvdP or    # Graminine/DMAQ/PVD
+                    (Orn_monoox and not (KtzT or MetRS-like)) or             # Hydroxamate, exclude piperazates and hydrazides
+                    Lys_monoox or VbsL                                       # Lys and vicibactin hydroxamates
+               ))
+
+RULE methanobactin
+    CATEGORY RiPP
+    DESCRIPTION Copper-chelating/transporting peptides
+    # see DOI: 10.1126/science.aap9437
+    EXAMPLE NCBI CP023737.1 1498747-1508549 methanobactin  # BGC0002004
+    CUTOFF 5
+    NEIGHBOURHOOD 10
+    CONDITIONS DUF692 and MbnC
+
+RULE opine-like-metallophore
+    CATEGORY other
+    DESCRIPTION Opine-like zincophores
+    # see DOI: 10.1128/mSystems.00554-20
+    EXAMPLE NCBI BA000017.4 2598076-2607334 staphylopine  # BGC0002487
+    CUTOFF 5
+    NEIGHBOURHOOD 10
+    CONDITIONS CntL and CntM
+
+RULE aminopolycarboxylic-acid
+    CATEGORY other
+    DESCRIPTION Aminopolycarboxylic acid metallophores
+    # see DOI: 10.1039/C8MT00009C
+    EXAMPLE NCBI OLMK01000008.1 45415-56279 ethylenediaminesuccinic acid hydroxyarginine  # BGC0002567
+    CUTOFF 10
+    NEIGHBOURHOOD 5
+    CONDITIONS AesA and AesB and AesC

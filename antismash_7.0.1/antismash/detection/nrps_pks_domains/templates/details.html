@@ -1,0 +1,15 @@
+<div class="details">
+    <div class="heading">
+      <span>Detailed domain annotation</span>
+      {{ help_tooltip(tooltip_text, "nrps-domain") }}
+      <div class="download-container">
+        <div class="download-icon download-svg" data-tag="{{region.anchor_id}}-details-svg" data-filename="{{record.id}}_{{region.anchor_id}}_nrps_pks.svg">
+        </div>
+      </div>
+    </div>
+    <div class="nrps-pks-domain-buttons">
+      {{switch("Selected features only", "domains-selected-only")}}
+      {{switch("Show module domains", "show-module-domains", starts_on=hide_lids)}}
+    </div>
+    <div class="details-svg" id="{{region.anchor_id}}-details-svg"></div>
+</div>
